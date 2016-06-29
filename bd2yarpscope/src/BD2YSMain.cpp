@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
         fprintf(stdout,"\n");
         fprintf(stdout,"Available options:\n");
         fprintf(stdout,"--name prefix (default bd2yarpscope)\n");
+        fprintf(stdout,"--mode <whole|top|bottom> (default whole)\n");
         fprintf(stdout,"--index # (default 0)\n");
 
         return 0; // EXIT_SUCCESS

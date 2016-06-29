@@ -30,15 +30,21 @@ class BD2YSModule : public RFModule
 
         string inAffPortName;
         string outAffPortName;
+        string inToolAffPortName;
+        string outToolAffPortName;
 
         BufferedPort<Bottle> inAffPort;
         BufferedPort<Bottle> outAffPort;
+        BufferedPort<Bottle> inToolAffPort;
+        BufferedPort<Bottle> outToolAffPort;
 
         Bottle *inAff;
-        
+        Bottle *inToolAff;
+
+        string mode;
         int blobIndex;
-        bool firstRun;
         int sizeAff;
+        int sizeToolAff;
 
     public:
         BD2YSModule();
