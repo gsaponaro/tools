@@ -48,6 +48,8 @@ bool BD2YSModule::configure(ResourceFinder &rf)
     inAff = NULL;
     inToolAff = NULL;
 
+    gotSomething = false;
+
     return true;
 }
 
@@ -77,16 +79,17 @@ bool BD2YSModule::updateModule()
 {
     // read blobs data
     inAff = inAffPort.read(mode=="whole");
-    inToolAff = inToolAffPort.read(mode=="top"||mode=="bottom");
-
     if (inAff != NULL)
-        sizeAff = static_cast<int>( inAff->get(0).asDouble() );
+        gotSomething = true;
 
+    inToolAff = inToolAffPort.read(mode=="top"||mode=="bottom");
     if (inToolAff != NULL)
-        sizeToolAff = static_cast<int>( inToolAff->get(0).asDouble() );
+        gotSomething = true;
 
-    if (sizeAff>0 || sizeToolAff>0)
+    if (gotSomething)
         writeAff();
+
+    gotSomething = false;
 
     return true;
 }
@@ -100,12 +103,17 @@ void BD2YSModule::writeAff()
 {
     if (mode == "whole")
     {
+        // discard frames where there are 0 objects
+        bool validWhole = inAff->tail().size()>0;
+        if (!validWhole)
+            return;
+
         Bottle &b = outAffPort.prepare();
         b.clear();
 
         const int numDesc = 37; // expected number of descriptors
         const int firstDescIndex = 23;
-        
+
         if (inAff->tail().get(blobIndex).asList()->size() != numDesc)
             fprintf(stdout, "warning: blob %d has %d descriptors, was expecting %d\n", blobIndex, inAff->tail().get(blobIndex).asList()->size(), numDesc);
 
@@ -118,6 +126,11 @@ void BD2YSModule::writeAff()
     }
     else
     {
+        // discard frames where there are 0 objects
+        bool validParts = inToolAff->tail().size()>0;
+        if (!validParts)
+            return;
+
         Bottle &b = outToolAffPort.prepare();
         b.clear();
 

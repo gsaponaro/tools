@@ -41,10 +41,9 @@ class BD2YSModule : public RFModule
         Bottle *inAff;
         Bottle *inToolAff;
 
+        bool gotSomething;
         string mode;
         int blobIndex;
-        int sizeAff;
-        int sizeToolAff;
 
     public:
         BD2YSModule();
