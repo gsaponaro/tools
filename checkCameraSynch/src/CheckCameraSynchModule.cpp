@@ -58,13 +58,17 @@ bool CheckCameraSynchModule::updateModule()
     ImageOf<PixelRgb> *yarpLeftImg = leftImgPort.read(true);
     ImageOf<PixelRgb> *yarpRightImg = rightImgPort.read(true);
 
-    Stamp stampLeft;
-    Stamp stampRight;
-    leftImgPort.getEnvelope(stampLeft);
-    rightImgPort.getEnvelope(stampRight);
-
     if (yarpLeftImg==NULL || yarpRightImg==NULL)
         return true;
+
+    Stamp stampLeft;
+    Stamp stampRight;
+    if (!leftImgPort.getEnvelope(stampLeft) ||
+        !rightImgPort.getEnvelope(stampRight))
+    {
+        yWarning("timestamp missing from at least one image");
+        return true;
+    }
 
     yInfo("left %f, right %f => deviation between cameras %f",
           stampLeft.getTime(),
