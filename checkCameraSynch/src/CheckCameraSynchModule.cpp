@@ -63,11 +63,13 @@ bool CheckCameraSynchModule::updateModule()
 
     Stamp stampLeft;
     Stamp stampRight;
-    if (!leftImgPort.getEnvelope(stampLeft) ||
-        !rightImgPort.getEnvelope(stampRight))
+    leftImgPort.getEnvelope(stampLeft);
+    rightImgPort.getEnvelope(stampRight);
+
+    if (!stampLeft.isValid() ||
+        !stampRight.isValid())
     {
-        yWarning("timestamp missing from at least one image");
-        return true;
+        yWarning("timestamp(s) not valid");
     }
 
     yInfo("left %f, right %f => deviation between cameras %f",
