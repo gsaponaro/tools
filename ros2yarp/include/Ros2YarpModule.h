@@ -30,6 +30,7 @@ class Ros2YarpModule : public RFModule
 {
 private:
     std::string moduleName;
+    double mydelay;
     std::string inputImagePortName;
     std::string outputImagePortName;
     Node *rosNode;

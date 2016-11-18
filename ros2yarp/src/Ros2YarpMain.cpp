@@ -26,6 +26,7 @@ int main(int argc, char* argv[])
     {
         yInfo("Available options:");
         yInfo("--name prefix (default ros2yarp)");
+        yInfo("--delay seconds (default 0.05)");
         return 0; // EXIT_SUCCESS
     }
 

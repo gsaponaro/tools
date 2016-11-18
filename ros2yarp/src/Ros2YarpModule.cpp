@@ -13,6 +13,9 @@ bool Ros2YarpModule::configure(ResourceFinder &rf)
     moduleName = rf.check("name",Value("ros2yarp")).asString();
     yarp::os::RFModule::setName(moduleName.c_str());
 
+    mydelay = rf.check("delay",Value(0.05)).asDouble();
+    yInfo("refresh delay set to %f", mydelay);
+
     rosNode = new yarp::os::Node("/ros2yarp_node"); // can be any string
 
     inputImagePortName = "/camera/rgb/image_raw";
@@ -52,7 +55,7 @@ bool Ros2YarpModule::close()
 
 double Ros2YarpModule::getPeriod()
 {
-    return 0.0;
+    return 0.0; // sync with incoming data
 }
 
 bool Ros2YarpModule::updateModule()
@@ -72,7 +75,7 @@ bool Ros2YarpModule::updateModule()
     {
         sensor_msgs_Image *mux;
         mux = inputImagePort.read(false);
-        yarp::os::Time::delay(0.05);
+        yarp::os::Time::delay(mydelay);
         if (mux != NULL)
         {
             ImageOf<PixelRgb> &outYarp = outputImagePort.prepare();
