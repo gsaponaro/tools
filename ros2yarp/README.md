@@ -3,4 +3,5 @@ This module has been moved to the [Vizzy](https://github.com/vislab-tecnico-lisb
 https://github.com/vislab-tecnico-lisboa/vizzy/tree/master/vizzy_yarp_icub/src/modules/ros2yarpImageBridge
 
 Giovanni Saponaro
+
 21 November 2016
